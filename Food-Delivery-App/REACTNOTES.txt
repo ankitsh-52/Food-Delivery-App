@@ -1,0 +1,132 @@
+What’s REACT HOOKS
+(These are normal JS utility function)
+- useState()
+- useEffect()
+
+# ASYNCHRONOUS RENDERING OF UPDATE FUNCTION
+import { useState } from "react";
+
+export default function Count () {
+    const [count, setCount] = useState(0);
+
+    const inCount = () => {
+        //! setCount(count+1); In this case function will behave asynchronously abruptly
+        setCount((currVal) => { //! This is the correct way to use updater function
+            return currVal+1;
+        })
+        console.log(`Count value is: ${count}`);
+    }
+
+    return (
+        <div>
+            <h3>Count: {count}</h3>
+            <button onClick={inCount}>Count++</button>
+        </div>
+    )
+}
+/* 
+This behavior happens because React's setState (or setCount in this case) is asynchronous. When you call setCount(count + 1), React schedules the state update and re-renders the component, but the state value (count) does not update immediately. Here's a detailed explanation:
+1. What’s Happening Step by Step:
+
+    Initial Render:
+        count starts at 0 (from useState(0)).
+
+    Clicking the Button (inCount is called):
+        setCount(count + 1) is executed.
+        React schedules the state update. The component will re-render, but it hasn’t re-rendered yet at this point.
+        console.log(count) runs before the re-render, so it logs the current value of count (the old value) instead of the updated value.
+
+    Re-Render Happens:
+        React re-renders the component, and the updated value of count (now incremented by 1) is shown in the UI.
+
+2. Why Doesn't console.log Show the Updated Value?
+
+    React batches state updates for performance reasons. This batching ensures that multiple state updates within the same event are processed together, minimizing unnecessary re-renders.
+    Because the state update is asynchronous, console.log(count) inside the same function logs the current state value, not the updated one.
+*/
+
+# INITIALIZING useState WITH FUNCTIONS
+function init() {
+    return Math.random();
+}
+
+export default function Counter () {
+    let [count, setCount] = useState(init); 
+-  here we do not execute the function in the useState() react will take care of that & also the state variable start value is the 1st value returned by the init function.
+}
+
+Why React is Fast - Final Answer
+React is fast because it efficiently handles UI updates through the Virtual DOM, reconciliation algorithm, and optimized real DOM updates:
+
+- Virtual DOM:
+    * React creates a lightweight copy of the real DOM in memory, avoiding direct manipulation of the slower real DOM. This makes it easier for React to calculate changes quickly.
+
+- Diffing and Reconciliation:
+    * When a component’s state or props change, React creates a new Virtual DOM and compares it with the previous   Virtual DOM using a process called diffing.
+    * This comparison identifies the minimal set of changes needed.
+    * The reconciliation algorithm then efficiently applies these changes to the real DOM.
+
+- Batching Updates:
+    * React groups multiple updates together, reducing the number of real DOM manipulations.
+
+- Keys in Lists:
+    * React optimizes rendering by using keys to track and manage changes in lists, ensuring minimal re-renders.
+
+- Fiber Architecture:
+    * React’s Fiber engine enables smoother updates by prioritizing rendering tasks and splitting updates into smaller chunks.
+
+* Why React re-renders every time if there is any state or props changes?
+- React always re-renders a component when its state or props change. This re-render is essential to update the Virtual DOM. However, React ensures the real DOM is updated only where changes are detected in the Virtual DOM. This approach makes React both declarative (you describe the UI state) and efficient (minimizing real DOM updates).
+
+* const [btnName, setBtnName] = useState<string>("Login"); here how btnName changes if it is constant? 
+- "The array reference remains constant, but React updates the value at the '0th position' when the state changes, similar to how a constant array can have its elements changed—but in React, these updates are controlled and managed internally via the setter function."
+
+* Why Controlled Inputs are Important?
+- Using value and onChange together makes the input field controlled by React. It allows React to manage the state, ensuring the UI and state remain consistent.
+
+* How React Controlled Inputs Work?
+- In a controlled input: 
+    The value of the input field is tied to a state variable (e.g., searchText). To allow the input field to change its value, you need to update the state variable (searchText) when the user types, using the onChange event Without an onChange handler, the input remains static, and typing into it doesn't work.
+
+# TypeScript Event Types for React?
+React.ChangeEvent<HTMLInputElement> is a TypeScript type provided by React to ensure type safety for event objects in React components. It specifies two things:
+    1.) Event Type: ChangeEvent → Represents events triggered when a value changes (like in input boxes).
+    2.) Target Element: <HTMLInputElement> → Specifies that the target of the event is an <input> HTML element.
+
+* Some are commonly used React event types for various event handlers:
+Event Handler	        Event Type	            Target Element
+onChange	           React.ChangeEvent	    <HTMLInputElement>
+onClick            	   React.MouseEvent	        <HTMLButtonElement>
+onSubmit	           React.FormEvent	        <HTMLFormElement>
+onKeyDown	           React.KeyboardEvent	    <HTMLInputElement>
+onFocus	               React.FocusEvent	        <HTMLInputElement>
+onBlur	               React.FocusEvent	        <HTMLInputElement>
+onMouseOver	           React.MouseEvent	        <HTMLDivElement>
+
+# React Fiber and Reconciliation
+React Fiber still uses the Reconciliation Algorithm concept but in an improved, incremental way. React Fiber is the modern reconciliation engine used in React. It enhances the original Reconciliation Algorithm by introducing asynchronous rendering, prioritization, and incremental updates for more efficient DOM updates.
+Key Steps:
+    1.) Create a Virtual DOM: React creates a new virtual DOM when state/props change.
+    2.) Diffing: React compares the new virtual DOM with the previous virtual DOM (Diffing Algorithm).
+    3.) Priority Scheduling: Fiber assigns priority to updates, focusing on important tasks first.
+    4.) Efficient Updates: React applies only the minimal required changes to the actual DOM.
+
+
+# useEffect important points: 
+React Render Flow with useEffect: 
+    React renders the component and updates the Virtual DOM.
+    React commits the changes to the actual DOM (reconciles any differences).
+    After the render cycle is complete, useEffect runs.
+
+# What is useEffect Used For?
+useEffect is used to handle side effects in functional components after the component renders.
+Side effects include things like:
+    Async tasks (e.g., API calls, timers)
+    DOM manipulations (e.g., adding event listeners)
+    Subscriptions (e.g., WebSocket connections)
+    Interacting with the outside world without affecting the normal component flow.
+
+# useEffect dependency keu point
+    1.) [] as the dependency array → useEffect runs once after the first render (like componentDidMount).
+    2.) If dependencies are provided in the array, React will re-run the effect whenever any of those dependencies change.
+    3.) No dependency array → useEffect runs after every render.

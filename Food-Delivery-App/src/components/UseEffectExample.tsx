@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { RestaurantCard, RestaurantDataProps } from "./RestaurantCard";
 import { RestaurantData } from "../utils/dummyData";
-import React, { useState } from "react";
-// import Shimmer from "./ShimmerUi";
+import { Header } from "./Header";
 
-export const Body = () => {
+export default function UseEffectExample () {
+    console.log("Start of component");
+    
 //!STATE VARIABLE 
 //? Local state variable
     const [filterRestData, setFilteredRestData] = useState<RestaurantDataProps[]>(RestaurantData);
@@ -32,8 +34,20 @@ export const Body = () => {
         })
     }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            let data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5204303&lng=73.8567437&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
+            data = await data.json();
+            console.log(data);
+        }
+        fetchData();
+        console.log("Use Effect hook is being used");
+    }, []);
+    console.log("End of component");
+
     return (
         <div className="body">
+            <Header />
             {/* <div className="search">Search</div> */}
             <div className="filter">
                 <div className="search-btn">
