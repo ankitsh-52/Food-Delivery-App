@@ -143,3 +143,6 @@ export default function Error() {
         # it is a generic error handler for non-react-route error.
     );
 }
+
+# Important: 
+- When use react never use anchor tag(<a>) to link pages as each time we click on it page will be refreshed. Instead of that use react-router link component(<Link to="">name</Link>).
