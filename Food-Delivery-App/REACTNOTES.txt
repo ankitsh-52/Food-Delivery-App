@@ -130,3 +130,16 @@ Side effects include things like:
     1.) [] as the dependency array → useEffect runs once after the first render (like componentDidMount).
     2.) If dependencies are provided in the array, React will re-run the effect whenever any of those dependencies change.
     3.) No dependency array → useEffect runs after every render.
+
+* Error Handling
+To handle error use useRouteError() method like this:
+export default function Error() {
+    const err = useRouteError();
+    if(isRouterErrorResponse(err)){
+        # it is used to handle error from react-router. 
+        return ();
+    };
+    return(
+        # it is a generic error handler for non-react-route error.
+    );
+}

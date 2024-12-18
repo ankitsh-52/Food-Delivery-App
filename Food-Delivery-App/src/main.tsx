@@ -5,14 +5,38 @@ import App from './App.tsx'
 // import SwiggyApiApp from './components/SwiggyApiApp.tsx'
 // import './index.css'
 // import { appRouter } from './App.tsx'
-// import { RouterProvider } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import ErrorPage from './components/ErrorPage.tsx';
+import AboutPage from './components/AboutPage.tsx';
+import ContactUs from './components/ContactUs.tsx';
+import { Body } from './components/Body.tsx';
+
+export const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element : <App />,
+    children:[
+      {
+        path : "/",
+        element: <Body />,
+      },
+      {
+        path : "/about",
+        element: <AboutPage />,
+      },
+      {
+        path : "/contact",
+        element: <ContactUs />,
+      },
+    ],
+    errorElement: <ErrorPage />
+  },
+]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {/* <App /> */}
+    <RouterProvider router={appRouter} />
   </StrictMode>
 )
 
-// createRoot(document.getElementById('root')!).render(
-//   <RouterProvider router={appRouter} />
-// )
