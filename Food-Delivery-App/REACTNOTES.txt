@@ -146,3 +146,8 @@ export default function Error() {
 
 # Important: 
 - When use react never use anchor tag(<a>) to link pages as each time we click on it page will be refreshed. Instead of that use react-router link component(<Link to="">name</Link>).
+
+# Two types of routing 
+1.) Client Side Routing(CSR): It means that only no N/W call are made for getting different page, instead react only interchanges different components based on the routes. That is why React is also called as Single Page application(SPA) because react loads all the components as the app starts. So when we go to different page it is just component interchange.
+
+2.) Server Side Routing(SSR): Here a N/W call needs to be made to get different pages, as in the case when we use anchor(<a>) tag.

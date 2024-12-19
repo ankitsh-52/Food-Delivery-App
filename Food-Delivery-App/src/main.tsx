@@ -7,9 +7,11 @@ import App from './App.tsx'
 // import { appRouter } from './App.tsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './components/ErrorPage.tsx';
-import AboutPage from './components/AboutPage.tsx';
+// import AboutPage from './components/AboutPage.tsx';
 import ContactUs from './components/ContactUs.tsx';
 import { Body } from './components/Body.tsx';
+import About from './components/AboutPage.tsx';
+// import RestaurantMenu from './components/RestaurantMenu.tsx';
 
 export const appRouter = createBrowserRouter([
   {
@@ -22,12 +24,16 @@ export const appRouter = createBrowserRouter([
       },
       {
         path : "/about",
-        element: <AboutPage />,
+        element: <About />,
       },
       {
         path : "/contact",
         element: <ContactUs />,
       },
+      {
+        path : "/restaurant/:resId",
+        // element: <RestaurantMenu name={''} areaName={''} avgRatingString={''} cloudinaryImgId={''} city={''} cuisines={[]} id={''} totalRatings={''} />,
+      }
     ],
     errorElement: <ErrorPage />
   },
